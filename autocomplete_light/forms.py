@@ -457,7 +457,6 @@ class ModelForm(six.with_metaclass(*bases)):
     ``autocomplete_names`` understand generic foreign key and generic many to
     many descriptor names.
     """
-    __metaclass__ = ModelFormMetaclass
 
 
 def modelform_factory(model, autocomplete_fields=None,
@@ -492,6 +491,8 @@ def modelform_factory(model, autocomplete_fields=None,
         Meta.fields = kwargs.pop('fields')
     if 'exclude' in kwargs:
         Meta.exclude = kwargs.pop('exclude')
+    if 'fields' not in kwargs and 'exclude' not in kwargs:
+        Meta.fields = '__all__'
 
     kwargs['form'] = type(kwargs['form'].__name__, (kwargs['form'],),
             {'Meta': Meta})
